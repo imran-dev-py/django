@@ -48,7 +48,9 @@ class ProductEditView(View):
             "sku": data.get("sku"),
             "description": data.get("description"),
         }
-        product.update(product_data)
+        product.title = product_data['title']
+        product.sku = product_data['sku']
+        product.description = product_data['description']
         product.save()
 
         return redirect('list.product')
