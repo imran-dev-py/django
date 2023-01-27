@@ -1,0 +1,18 @@
+{% extends 'backend/base.html' %}
+{% block title %} Delete {{ variant_delete }} {% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <form class="col-md-6" method="post" novalidate>
+        {% csrf_token %}
+        <div class='card shadow mb-4'>
+            <div class="card-body">
+                <p>Are you sure, you want to delete that? <b>{{ variant_delete }}</b></p>
+                <input type="submit" value="Delete" class="button">
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
