@@ -1,7 +1,5 @@
 import json
-
-from product.models import Variant
-from product.models import Variant, Product, ProductVariant, ProductVariantPrice
+from product.models import Variant, Product, ProductVariant, ProductVariantPrice, ProductImage
 
 from django.views import generic
 from django.utils.decorators import method_decorator
@@ -25,7 +23,6 @@ class CreateProductView(generic.TemplateView):
 class ProductCreate(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        print(data)
 
         product_data = {
             'title': data.get('title'),
@@ -41,19 +38,17 @@ class ProductCreate(View):
 class ProductEditView(View):
     def get(self, request, id, *args, **kwargs):
         data = json.loads(request.body)
-        product = Product.objects.prefetch_related('product_set').filter(id=id)
+        product = Product.objects.all().filter(id=id)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, id, *args, **kwargs):
         data = json.loads(request.body)
-        product = Product.objects.prefetch_related('product_set').filter(id=id)
+        product = Product.objects.all().filter(id=id)
         product_data = {
             "title": data.get("title"),
             "sku": data.get("sku"),
             "description": data.get("description"),
         }
-        product.title = product_data['title']
-        product.sku = product_data['sku']
-        product.description = product_data['description']
+        product.update(product_data)
         product.save()
 
         return redirect('list.product')
